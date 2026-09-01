@@ -1,6 +1,6 @@
-
-from flask import Flask, send_from_directory
+from flask import Flask, send_from_directory, jsonify
 import os
+
 from extensions import db, migrate, jwt, cors
 from config import Config
 
@@ -22,19 +22,20 @@ def create_app():
     app = Flask(__name__)
 
     app.config.from_object(Config)
-    app.config["MAX_CONTENT_LENGTH"] = 500 * 1024 * 1024  # 500 MB upload limit
 
-    # Extensions
+    app.config["MAX_CONTENT_LENGTH"] = 500 * 1024 * 1024
+
     db.init_app(app)
     migrate.init_app(app, db)
     jwt.init_app(app)
 
-    # CORS
     cors.init_app(
         app,
         resources={
             r"/api/*": {
-                "origins": ["http://localhost:5173"],
+                "origins": [
+                    "http://localhost:5173"
+                ],
                 "methods": [
                     "GET",
                     "POST",
@@ -53,7 +54,14 @@ def create_app():
     )
 
 
-    # Serve uploaded audio/video files.
+
+    @app.route("/")
+    def home():
+        return jsonify({
+            "message": "Moringa School Daily Dev API is running",
+            "status": "success"
+        }), 200
+
     @app.route("/uploads/<path:filename>")
     def uploaded_file(filename):
         return send_from_directory(
@@ -61,7 +69,6 @@ def create_app():
             filename
         )
 
-    # Register blueprints
     app.register_blueprint(auth_bp)
     app.register_blueprint(user_bp)
     app.register_blueprint(admin_bp)
@@ -83,4 +90,3 @@ app = create_app()
 
 if __name__ == "__main__":
     app.run(debug=True)
-
