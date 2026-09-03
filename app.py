@@ -34,7 +34,8 @@ def create_app():
         resources={
             r"/api/*": {
                 "origins": [
-                  "https://daily-dev-lime.vercel.app/"
+                   "http://localhost:5173",
+                     "https://daily-dev-lime.vercel.app"
                 ],
                 "methods": [
                     "GET",
