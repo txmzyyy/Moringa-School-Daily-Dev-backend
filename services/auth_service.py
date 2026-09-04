@@ -6,6 +6,9 @@ def register_user(first_name, last_name, email, password):
     existing_user = User.query.filter_by(email=email).first()
     if existing_user:
         raise ValueError("Email already registered")
+
+    if role not in ("user", "writer"):
+     role = "user"
     user = User(
         first_name=first_name,
         last_name=last_name,
