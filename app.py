@@ -35,7 +35,8 @@ def create_app():
             r"/api/*": {
                 "origins": [
                    "http://localhost:5173",
-                     "https://daily-dev-lime.vercel.app"
+                     "https://daily-dev-lime.vercel.app",
+                    "https://daily-dev-7rgw-nzwxxxv5v-ilhan4.vercel.app"
                 ],
                 "methods": [
                     "GET",
