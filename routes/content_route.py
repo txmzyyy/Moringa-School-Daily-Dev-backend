@@ -1,6 +1,7 @@
 
 from flask import Blueprint, request, jsonify, current_app
 from flask_jwt_extended import jwt_required
+from routes.auth_route import current_user
 from werkzeug.utils import secure_filename
 import os
 import uuid
@@ -204,7 +205,7 @@ def approve(content_id):
 def delete_content(content_id):
     current_user = get_current_user()
 
-    if current_user.role not in ("admin", "writer"):
+    if current_user.role != "admin":
         return jsonify({"error": "Forbidden"}), 403
 
     item = Content.query.get_or_404(content_id)

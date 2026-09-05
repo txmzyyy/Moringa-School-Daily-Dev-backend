@@ -18,7 +18,10 @@ def staff_only():
 @report_bp.route("", methods=["POST"])
 @jwt_required()
 def file_report():
-    current_user = get_current_user()
+    current_user, error = staff_only()
+    if error:
+        return error
+
     data = request.get_json() or {}
     content_id = data.get("content_id")
     reason = (data.get("reason") or "").strip()
@@ -30,6 +33,7 @@ def file_report():
     db.session.add(report)
     db.session.commit()
     return jsonify(report.to_dict()), 201
+    
 
 
 @report_bp.route("", methods=["GET"])

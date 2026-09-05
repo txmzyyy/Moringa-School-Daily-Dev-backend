@@ -1,7 +1,7 @@
 from models.user import User
 from extensions import db
 
-def register_user(first_name, last_name, email, password):
+def register_user(first_name, last_name, email, password, role=None):
     
     existing_user = User.query.filter_by(email=email).first()
     if existing_user:
@@ -13,7 +13,7 @@ def register_user(first_name, last_name, email, password):
         first_name=first_name,
         last_name=last_name,
         email=email,
-        role="user"
+        role=role
     )
 
     user.set_password(password)

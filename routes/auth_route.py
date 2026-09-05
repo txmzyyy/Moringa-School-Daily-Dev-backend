@@ -43,7 +43,8 @@ def signup():
             first_name=data["first_name"].strip(),
             last_name=data["last_name"].strip(),
             email=data["email"].strip().lower(),
-            password=data["password"]
+            password=data["password"],
+            role=data.get("role", "user")
         )
 
         token = create_access_token(
